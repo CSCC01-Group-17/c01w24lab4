@@ -39,19 +39,22 @@ function App() {
   }, [])
 
   const deleteNote = async (entry) => {
-    deleteNoteState(entry._id);
-
     try {
-      const response = await fetch(`http://localhost:4000/deleteNote/${entry._id}`, {
+      await fetch(`http://localhost:4000/deleteNote/${entry._id}`, {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json"
         },
+      }).then(async (response) => {
+        if (!response.ok) {
+          console.log("Server failed to delete the note:", response.status);
+          alert("Failed to delete the note!")
+        } else {
+          await response.json().then(() => {
+            deleteNoteState(entry._id);
+          }) 
+        }
       });
-  
-      if (!response.ok) {
-        console.log("Server failed to delete the note:", response.status);
-      }
     } catch (error) {
       console.error("Delete function failed:", error);
     }
@@ -83,6 +86,29 @@ function App() {
     }
   }
 
+  const onChangeColor = async (noteId, color) => {
+  try {
+    const response = await fetch(`http://localhost:4000/updateNoteColor/${noteId}`, {
+      method: 'PATCH',
+      headers: {
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ color }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to update note color');
+    }
+
+    setNotes((prevNotes) =>
+      prevNotes.map((note) =>
+        note._id === noteId ? { ...note, color: color } : note
+      )
+    );
+  } catch (error) {
+    console.error(error);
+  }
+  };
   
   // -- Dialog functions --
   const editNote = (entry) => {
@@ -129,6 +155,18 @@ function App() {
     }))
   }
 
+  const [filterNotes, setFilterNotes] = useState([]);
+  const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    setFilterNotes(
+      notes.filter((note) =>
+        note.title.toLowerCase().includes(search.toLowerCase())
+      )
+    );
+  }, [search]);
+
+
   return (
     <div className="App">
       <header className="App-header">
@@ -141,7 +179,11 @@ function App() {
             <>Loading...</>
             : 
             notes ?
-            notes.map((entry) => {
+            
+            <>
+            <input value={search} onChange={(e) => setSearch(e.target.value)} />
+
+             {filterNotes.map((entry) => {
               return (
               <div key={entry._id}>
                 <Note
@@ -151,7 +193,9 @@ function App() {
                 />
               </div>
               )
-            })
+            })}
+            </>
+           
             :
             <div style={AppStyle.notesError}>
               Something has gone horribly wrong!
