@@ -129,6 +129,18 @@ function App() {
     }))
   }
 
+  const [filterNotes, setFilterNotes] = useState([]);
+  const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    setFilterNotes(
+      notes.filter((note) =>
+        note.title.toLowerCase().includes(search.toLowerCase())
+      )
+    );
+  }, [search]);
+
+
   return (
     <div className="App">
       <header className="App-header">
@@ -141,7 +153,11 @@ function App() {
             <>Loading...</>
             : 
             notes ?
-            notes.map((entry) => {
+            
+            <>
+            <input value={search} onChange={(e) => setSearch(e.target.value)} />
+
+             {filterNotes.map((entry) => {
               return (
               <div key={entry._id}>
                 <Note
@@ -151,7 +167,9 @@ function App() {
                 />
               </div>
               )
-            })
+            })}
+            </>
+           
             :
             <div style={AppStyle.notesError}>
               Something has gone horribly wrong!

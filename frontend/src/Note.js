@@ -13,17 +13,23 @@ const Note = ({entry, editNote, deleteNote}) => {
                 {formatDate(entry.createdAt)}
             </span>
             <p style={NoteStyle.text}>{entry.title}</p>
+                <button>
+
+
+                </button>
+                
                 <button
                     onClick={() => editNote(entry)}
                     >
                     Edit note
                 </button>
-                {<button
+                <button
                     onClick={() => deleteNote(entry)}
                     >
                     Delete note
-                </button>}
-        </div>
+                </button>
+            
+        </div>  
     )
 
 }
