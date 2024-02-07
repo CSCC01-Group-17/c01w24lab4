@@ -1,8 +1,16 @@
-Added a new feature for colour coding notes. It allows users to assign a colour to a note for better organization and visual categorization.
-self code review:
+## Description
+Please include a brief description of the changes made.
 
-Fixed a bug where deleting a single note wouldn't delete.
-self code review:
+## Type of Change
+Please check the appropriate box below:
+- [ ] Bug fix
+- [ ] New feature
+- [ ] Breaking change
 
-Added a new feature for note searching which allows users to quickly find notes by title.
-self code review:
+## Self Code Review
+I have,
+- [ ] Reviewed the code changes to ensure they meet the project's coding standards.
+- [ ] Ensured that all existing tests pass successfully.
+- [ ] Confirmed that the changes are necessary and aligned with the project's goals.
+- [ ] Ensured the changes are logically organized and easy to understand.
+- [ ] Ensured the code style consistent with the rest of the project.
